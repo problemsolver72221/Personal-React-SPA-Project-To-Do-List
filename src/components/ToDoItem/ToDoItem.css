@@ -1,0 +1,111 @@
+.inside-label {
+  cursor: pointer;
+  user-select: none;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+.inside-label:not(:last-child) {
+  margin-right: 6px;
+}
+
+.inside-label span {
+  float: left;
+  vertical-align: middle;
+  transform: translate3d(0, 0, 0);
+  font-weight: 800;
+}
+.inside-label span:first-child {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  transform: scale(1);
+  border: 2px solid #c8ccd4;
+  transition: all 0.2s ease;
+  margin-right: 10px;
+}
+.inside-label span:first-child svg {
+  position: absolute;
+  top: 3px;
+  left: 2px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 16px;
+  stroke-dashoffset: 16px;
+  transition: all 0.3s ease;
+  transition-delay: 0.1s;
+  transform: translate3d(0, 0, 0);
+}
+
+.inside-label:hover span:first-child {
+  border-color: #2772ff;
+}
+.main:checked + .inside-label span:first-child {
+  background: #515255;
+  border-color: #515255;
+  animation: myAnimation 0.4s ease;
+}
+.main:checked + .inside-label span:first-child svg {
+  stroke-dashoffset: 0;
+}
+
+.main:checked + .inside-label .todo-item {
+  background: #dcdee3;
+  color: #6e7074;
+  border-bottom: 0.5px solid #92959b;
+}
+
+.main:checked + .inside-label .todo-item:hover {
+  background: #cdd0d7;
+  color: #6e7074;
+  border-bottom: 0.5px solid #92959b;
+}
+
+.main:checked + .inside-label .item-text {
+  text-decoration: line-through;
+  transition: width 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.tick-icon {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.todo-item {
+  font-weight: 600;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 10px;
+  border-bottom: 0.5px solid #c8ccd4;
+}
+
+.todo-item:hover {
+  background: #d4e2ff;
+}
+
+.item-text {
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  position: relative;
+}
+
+@media screen and (max-width: 650px) {
+  .inside-label {
+    width: 100%;
+    margin-bottom: 4px;
+    display: inline-block;
+  }
+}
+
+@keyframes myAnimation {
+  50% {
+    transform: scale(0.9);
+  }
+}

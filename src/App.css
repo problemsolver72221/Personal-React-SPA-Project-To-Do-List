@@ -1,22 +1,75 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 .App {
-  text-align: center;
+  margin: 20px auto;
 }
 
-.App-logo {
-  height: 40vmin;
+.main-container {
+  padding: "20px";
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.table-container {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-column-gap: 10px;
+  padding: 0 20px 20px 20px;
+}
+
+.input-container {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto;
+  padding: 20px 20px 0 20px;
+  justify-items: center;
+}
+
+.input-wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  width: 50%;
 }
 
-.App-link {
-  color: #09d3ac;
+.add-button,
+.add-button:active,
+.add-button:focus {
+  background-color: #2772ff;
+  color: white;
+  outline: 0;
+  border: none;
+  cursor: pointer;
+  vertical-align: baseline;
+  height: 36px;
+  margin: 0 0.25em 0 0;
+  padding: 0.78571429em 1.5em 0.78571429em;
+  text-transform: none;
+  text-shadow: none;
+  font-weight: 700;
+  line-height: 1em;
+  font-style: normal;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 0.28571429rem;
+  user-select: none;
+}
+
+.add-button:hover {
+  background-color: #205ed1;
+}
+
+.add-button:active:hover {
+  background-color: #1d53ba;
+}
+
+.validationError {
+  background-color: #fcdfdf;
+  color: #ef5350;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 5px;
+  text-align: center;
+  border: 0.5px solid #ef5350;
+  width: 50%;
 }
