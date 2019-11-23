@@ -1,7 +1,7 @@
 import React from "react";
 import "./ToDoInput.css";
 
-const ToDoInput = ({ label, value, onChange, onKeyPress, onClick }) => {
+const ToDoInput = ({ label, expiry, value, onChange, onKeyPress, onClick }) => {
   return (
     <div className="to-do-input">
       <input
@@ -13,7 +13,12 @@ const ToDoInput = ({ label, value, onChange, onKeyPress, onClick }) => {
         onKeyPress={onKeyPress}
         onClick={onClick}
       />
-      <span className="label">{label}</span>
+      <span className="label">
+        Write a to-do here for{" "}
+        <span className={expiry ? "date-expired" : "date-not-expired"}>
+          {label}
+        </span>
+      </span>
       <span className="border" />
     </div>
   );

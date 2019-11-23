@@ -1,14 +1,15 @@
 import React, { Component } from "react";
 import ToDoItem from "../ToDoItem/ToDoItem";
+import DateViewer from "./../common/DateViewer/DateViewer";
+import dateSorter from "./../../utility/dateSorter";
 import "./ToDosTable.css";
 
 class ToDosTable extends Component {
   render() {
-    const { data, heading, completion } = this.props;
+    const { data, currentDate, completion } = this.props;
     return (
       <div className="to-do-table-container">
-        <h2 className="to-do-header">{heading}</h2>
-        <div>
+        <ul className="to-do-list-container">
           {!data.length && !completion ? (
             <p>Your list seems empty, add some to-dos!</p>
           ) : (
@@ -18,17 +19,44 @@ class ToDosTable extends Component {
               .filter(d => d.completed === completion)
               .map(d => {
                 return (
-                  <ToDoItem
-                    itemlabel={d.name}
+                  <li
                     key={d.toDoId}
-                    todoid={d.toDoId}
-                    onItemCheck={() => this.props.itemCheck(d.toDoId)}
-                    completion={completion}
-                  />
+                    className={
+                      !completion
+                        ? "to-do-list-item"
+                        : "to-do-list-item completed"
+                    }
+                  >
+                    <ToDoItem
+                      itemlabel={d.name}
+                      todoid={d.toDoId}
+                      onItemCheck={() => this.props.itemCheck(d.toDoId)}
+                      completion={completion}
+                    />
+                    <React.Fragment>
+                      <div className="list-item-container">
+                        <DateViewer
+                          date={d.dateLabel}
+                          className={
+                            currentDate ===
+                              dateSorter([currentDate, d.dueDate], "asc")[0] &&
+                            !completion
+                              ? "selected-day"
+                              : dateSorter(
+                                  [currentDate, d.dueDate],
+                                  "asc"
+                                )[0] && !completion
+                              ? "selected-day expired"
+                              : "selected-day completed"
+                          }
+                        />
+                      </div>
+                    </React.Fragment>
+                  </li>
                 );
               })
           )}
-        </div>
+        </ul>
       </div>
     );
   }

@@ -1,0 +1,24 @@
+.selected-day {
+  display: grid;
+  vertical-align: middle;
+  font-family: Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  padding: 7px;
+  margin: auto;
+  color: #fcfcfc;
+  background: #2772ff;
+  border-radius: 6px;
+  cursor: context-menu;
+}
+
+.selected-day.expired {
+  color: #fcfcfc;
+  background: #ef5350;
+}
+
+.selected-day.completed {
+  color: #fcfcfc;
+  background: #515255;
+}

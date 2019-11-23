@@ -1,17 +1,11 @@
 .to-do-table-container {
   display: block;
-  margin: 30px 0 30px 0;
+  margin: 5px 0 30px 0;
   padding: 15px;
   height: 33vw;
   overflow-y: scroll;
   box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.15);
   border: 1px solid rgba(34, 36, 38, 0.15);
-}
-
-.to-do-header {
-  margin-bottom: 10px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(34, 36, 38, 0.15);
 }
 
 .to-do-table-container::-webkit-scrollbar {
@@ -33,4 +27,50 @@
     color-stop(0.72, rgb(73, 125, 189)),
     color-stop(0.86, rgb(28, 58, 148))
   );
+}
+
+.to-do-header {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(34, 36, 38, 0.15);
+}
+
+.to-do-list-container {
+  list-style: none;
+}
+
+.to-do-list-item {
+  display: grid;
+  grid-template-columns: 85% 15%;
+  justify-content: center;
+  font-weight: 600;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 10px;
+  border-bottom: 0.5px solid #c8ccd4;
+  margin: auto;
+}
+
+.to-do-list-item.completed {
+  background: #dcdee3;
+  color: #6e7074;
+  border-bottom: 0.5px solid #92959b;
+}
+
+.to-do-list-item.completed:hover {
+  background: #dcdee3;
+  color: #6e7074;
+  border-bottom: 0.5px solid #92959b;
+}
+
+.to-do-list-item.completed span:last-child {
+  text-decoration: line-through;
+  transition: width 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.list-item-container {
+  margin: auto 0 auto auto;
+}
+
+.to-do-list-item:hover {
+  background: #d4e2ff;
 }

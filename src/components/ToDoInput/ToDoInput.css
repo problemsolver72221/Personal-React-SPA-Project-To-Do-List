@@ -64,3 +64,11 @@
 .to-do-input input:focus + span + .border {
   transform: scaleX(1);
 }
+
+.date-not-expired {
+  color: #2772ff;
+}
+
+.date-expired {
+  color: #ef5350;
+}

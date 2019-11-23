@@ -1,19 +1,64 @@
 import React, { Component } from "react";
 import ToDoInput from "./components/ToDoInput/ToDoInput";
 import ToDosTable from "./components/ToDosTable/ToDosTable";
+import DatePicker from "./components/DatePicker/DatePicker";
 import randomIdGenerator from "./utility/randomIdGenerator";
+import dateGetter from "./utility/dateGetter";
+import dateFormatter from "./utility/dateFormatter";
+import dateSorter from "./utility/dateSorter";
 import "./App.css";
 
 class App extends Component {
   state = {
     toDoInput: "",
+    dateLabel: "Today",
+    selectedDate: "",
+    currentDate: "",
     toDoList: [],
     errors: {}
+  };
+
+  componentDidMount = () => {
+    const date = dateGetter();
+    this.setState({
+      currentDate: date,
+      selectedDate: {
+        date,
+        expired: false
+      }
+    });
   };
 
   handleInput = e => {
     let toDoInput = e.target.value;
     this.setState({ toDoInput });
+  };
+
+  handleDatePick = val => {
+    const currentDate = dateGetter();
+    const pickedDate = dateGetter(val);
+
+    let dateLabel;
+
+    currentDate === pickedDate
+      ? (dateLabel = "Today")
+      : (dateLabel = dateFormatter(val));
+
+    // -----------------------------------
+
+    let expired;
+
+    const comparing = dateSorter([currentDate, pickedDate], "asc");
+
+    comparing[0] === currentDate ? (expired = false) : (expired = true);
+
+    this.setState({
+      dateLabel,
+      selectedDate: {
+        date: pickedDate,
+        expired
+      }
+    });
   };
 
   handleValidation = () => {
@@ -29,7 +74,7 @@ class App extends Component {
 
   handleAddToDo = () => {
     // get the input from state
-    let { toDoInput, toDoList } = this.state;
+    let { toDoInput, toDoList, dateLabel, selectedDate } = this.state;
 
     const toDoId = randomIdGenerator();
 
@@ -38,7 +83,14 @@ class App extends Component {
     this.setState({ errors: errors || {} });
     if (errors) return;
 
-    toDoList.push({ toDoId, name: toDoInput, completed: false });
+    toDoList.push({
+      toDoId,
+      name: toDoInput,
+      completed: false,
+      dateLabel,
+      dueDate: selectedDate.date
+    });
+
     this.setState({ toDoList, toDoInput: "" });
   };
 
@@ -47,7 +99,7 @@ class App extends Component {
 
     if (key === "Enter") {
       // get the input from state
-      let { toDoInput, toDoList } = this.state;
+      let { toDoInput, toDoList, dateLabel, selectedDate } = this.state;
 
       const toDoId = randomIdGenerator();
 
@@ -56,7 +108,14 @@ class App extends Component {
       this.setState({ errors: errors || {} });
       if (errors) return;
 
-      toDoList.push({ toDoId, name: toDoInput, completed: false });
+      toDoList.push({
+        toDoId,
+        name: toDoInput,
+        completed: false,
+        dateLabel,
+        dueDate: selectedDate.date
+      });
+
       this.setState({ toDoList, toDoInput: "" });
     } else {
       return;
@@ -87,7 +146,14 @@ class App extends Component {
   };
 
   render() {
-    const { toDoInput, toDoList, errors } = this.state;
+    const {
+      toDoInput,
+      currentDate,
+      selectedDate,
+      dateLabel,
+      toDoList,
+      errors
+    } = this.state;
     return (
       <div className="App">
         <div className="main-container">
@@ -96,14 +162,19 @@ class App extends Component {
           </h1>
           <div className="input-container">
             <div className="input-wrapper">
+              <span style={{ margin: "auto 10px -4px auto" }}>
+                <DatePicker onDatePick={this.handleDatePick} />
+              </span>
               <ToDoInput
-                label="Write a to-do here"
+                label={dateLabel}
+                expiry={selectedDate.expired}
                 value={toDoInput}
                 onChange={this.handleInput}
                 onKeyPress={this.handleKeyPress}
                 onClick={() => this.setState({ errors: {} })}
               />
-              <span style={{ margin: "auto" }}>
+
+              <span style={{ margin: "auto auto 0 15px" }}>
                 <button className="add-button" onClick={this.handleAddToDo}>
                   Add
                 </button>
@@ -127,18 +198,23 @@ class App extends Component {
             )}
           </div>
           <div className="table-container">
-            <ToDosTable
-              data={toDoList}
-              heading="To Do List"
-              itemCheck={this.handleItemCheck}
-              completion={false}
-            />
-            <ToDosTable
-              data={toDoList}
-              heading="Completed"
-              itemCheck={this.handleItemCheck}
-              completion={true}
-            />
+            <div>
+              <h2 className="to-do-header">To Do List</h2>
+              <ToDosTable
+                data={toDoList}
+                currentDate={currentDate}
+                itemCheck={this.handleItemCheck}
+                completion={false}
+              />
+            </div>
+            <div>
+              <h2 className="to-do-header">Completed</h2>
+              <ToDosTable
+                data={toDoList}
+                itemCheck={this.handleItemCheck}
+                completion={true}
+              />
+            </div>
           </div>
         </div>
       </div>
