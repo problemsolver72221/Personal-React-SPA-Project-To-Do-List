@@ -6,7 +6,9 @@ import randomIdGenerator from "./utility/randomIdGenerator";
 import dateGetter from "./utility/dateGetter";
 import dateFormatter from "./utility/dateFormatter";
 import dateSorter from "./utility/dateSorter";
+import listSorter from "./utility/listSorter";
 import "./App.css";
+import SortBar from "./components/common/SortBar/SortBar";
 
 class App extends Component {
   state = {
@@ -15,6 +17,29 @@ class App extends Component {
     selectedDate: "",
     currentDate: "",
     toDoList: [],
+    sortedList: [],
+    currentSort: {
+      name: {
+        status: "default"
+      },
+      latestAdded: {
+        status: "default"
+      },
+      dueDate: {
+        status: "default"
+      }
+    },
+    sortTypes: {
+      asc: {
+        class: "sort-down"
+      },
+      desc: {
+        class: "sort-up"
+      },
+      default: {
+        class: "sort"
+      }
+    },
     errors: {}
   };
 
@@ -91,7 +116,7 @@ class App extends Component {
       dueDate: selectedDate.date
     });
 
-    this.setState({ toDoList, toDoInput: "" });
+    this.setState({ toDoList, sortedList: toDoList, toDoInput: "" });
   };
 
   handleKeyPress = event => {
@@ -116,7 +141,7 @@ class App extends Component {
         dueDate: selectedDate.date
       });
 
-      this.setState({ toDoList, toDoInput: "" });
+      this.setState({ toDoList, sortedList: toDoList, toDoInput: "" });
     } else {
       return;
     }
@@ -142,7 +167,22 @@ class App extends Component {
     toDoList[index] = { ...matched };
 
     // Set the new state
-    this.setState({ toDoList });
+    this.setState({ toDoList, sortedList: toDoList });
+  };
+
+  handleSorting = nameOfIt => {
+    const { currentSort, toDoList } = this.state;
+
+    let nextSort;
+
+    if (currentSort[nameOfIt].status === "asc") nextSort = "desc";
+    else if (currentSort[nameOfIt].status === "desc") nextSort = "default";
+    else if (currentSort[nameOfIt].status === "default") nextSort = "asc";
+
+    currentSort[nameOfIt].status = nextSort;
+    const sortedList = listSorter([...toDoList], nameOfIt, nextSort);
+
+    this.setState({ currentSort, sortedList });
   };
 
   render() {
@@ -152,6 +192,9 @@ class App extends Component {
       selectedDate,
       dateLabel,
       toDoList,
+      sortedList,
+      currentSort,
+      sortTypes,
       errors
     } = this.state;
     return (
@@ -173,7 +216,6 @@ class App extends Component {
                 onKeyPress={this.handleKeyPress}
                 onClick={() => this.setState({ errors: {} })}
               />
-
               <span style={{ margin: "auto auto 0 15px" }}>
                 <button className="add-button" onClick={this.handleAddToDo}>
                   Add
@@ -200,8 +242,13 @@ class App extends Component {
           <div className="table-container">
             <div>
               <h2 className="to-do-header">To Do List</h2>
+              <SortBar
+                onSorting={this.handleSorting}
+                currentSort={currentSort}
+                sortTypes={sortTypes}
+              />
               <ToDosTable
-                data={toDoList}
+                data={sortedList}
                 currentDate={currentDate}
                 itemCheck={this.handleItemCheck}
                 completion={false}

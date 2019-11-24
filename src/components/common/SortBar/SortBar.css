@@ -1,0 +1,26 @@
+.sortbar-container {
+  display: grid;
+  grid-template-columns: 40% 40% 20%;
+  margin-bottom: 5px;
+  padding-bottom: 7px;
+  border-bottom: 0.5px solid #515255;
+}
+
+.sortbar-column {
+  display: grid;
+  grid-template-columns: 25px auto;
+  vertical-align: middle;
+  align-content: center;
+  cursor: pointer;
+}
+
+.sortbar-container.column.right {
+  align-self: right;
+}
+
+.sort-text {
+  font-weight: 600;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  align-self: center;
+  user-select: none;
+}

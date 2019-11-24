@@ -67,10 +67,6 @@
   transition: width 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-.list-item-container {
-  margin: auto 0 auto auto;
-}
-
 .to-do-list-item:hover {
   background: #d4e2ff;
 }

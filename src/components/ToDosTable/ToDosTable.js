@@ -34,7 +34,7 @@ class ToDosTable extends Component {
                       completion={completion}
                     />
                     <React.Fragment>
-                      <div className="list-item-container">
+                      <div style={{ margin: 0 }}>
                         <DateViewer
                           date={d.dateLabel}
                           className={
