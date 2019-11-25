@@ -1,0 +1,93 @@
+.home-container {
+  background-image: linear-gradient(120deg, #343537, #163f8c);
+  height: 100vh;
+  width: 100%;
+  display: inline-grid;
+  justify-items: left;
+  align-items: center;
+  grid-template-rows: 60% 40%;
+}
+
+.greeting-container {
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 0 25px 25px;
+}
+
+.introduction-text {
+  color: white;
+  font-size: 3rem;
+  font-weight: 600;
+  font-family: "Noto Sans", sans-serif;
+  display: inline-block;
+  height: 120px;
+  padding: 120px 0 10px 0;
+}
+
+.introduction-button {
+  background-color: transparent;
+  padding: 10px 20px;
+  border: 4px solid white;
+  color: white;
+  font-weight: 600;
+  box-sizing: inherit;
+  display: inline-block;
+  font-size: 16pt;
+  font-family: "Noto Sans", sans-serif;
+  transition: all 0.2s;
+  cursor: pointer;
+  width: 300px;
+  height: 75px;
+  justify-self: center;
+}
+
+.animate {
+  animation: shine 2s linear infinite;
+}
+
+.introduction-button:hover {
+  background-color: white;
+  color: black;
+  font-size: 20pt;
+}
+
+.introduction-button:focus {
+  outline: 0;
+}
+
+@keyframes shine {
+  25% {
+    box-shadow: 0 0 40px rgba(88, 111, 124, 0.9);
+  }
+  75% {
+    box-shadow: 0 0 0 transparent;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .introduction-text {
+    font-size: 2rem;
+  }
+
+  .introduction-button {
+    width: 200px;
+    height: 55px;
+    font-size: 14pt;
+    padding: 5px 15px 5px 15px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .introduction-text {
+    font-size: 1.5rem;
+  }
+
+  .greeting-container {
+    padding: 0 0 25px 20px;
+  }
+
+  .section-header {
+    font-size: 28px;
+  }
+}

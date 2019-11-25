@@ -1,0 +1,69 @@
+.main-container {
+  padding: "20px";
+}
+
+.table-container {
+  width: 70%;
+  margin: auto;
+  padding: 0 20px 20px 20px;
+}
+
+.input-container {
+  display: grid;
+  padding: 20px 20px 0 20px;
+  margin-bottom: 25px;
+  justify-items: center;
+}
+
+.input-wrapper {
+  display: flex;
+  width: 67.5%;
+}
+
+.add-button,
+.add-button:active,
+.add-button:focus {
+  background-color: #2772ff;
+  color: white;
+  outline: 0;
+  border: none;
+  cursor: pointer;
+  vertical-align: baseline;
+  width: 125px;
+  height: 36px;
+  padding: 0.78571429em 1.5em 0.78571429em;
+  text-transform: none;
+  text-shadow: none;
+  font-weight: 700;
+  line-height: 1em;
+  font-style: normal;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 0.28571429rem;
+  user-select: none;
+}
+
+.add-button:hover {
+  background-color: #205ed1;
+}
+
+.add-button:active:hover {
+  background-color: #1d53ba;
+}
+
+.validationError {
+  background-color: #fcdfdf;
+  color: #ef5350;
+  font-weight: 500;
+  font-size: 14px;
+  padding: 5px;
+  text-align: center;
+  border: 0.5px solid #ef5350;
+  width: 67.5%;
+}
+
+.to-do-table-header {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(34, 36, 38, 0.15);
+}
