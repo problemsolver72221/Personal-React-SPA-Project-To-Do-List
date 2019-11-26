@@ -1,6 +1,6 @@
 .to-do-table-container {
   display: block;
-  margin: 5px 0 30px 0;
+  margin: 5px 0 10px 0;
   padding: 15px;
   height: 33vw;
   overflow-y: scroll;
@@ -69,4 +69,30 @@
 
 .to-do-list-item:hover {
   background: #d4e2ff;
+}
+
+@media screen and (max-width: 1200px) {
+  .to-do-table-container {
+    height: 45vh;
+  }
+}
+
+@media screen and (max-width: 660px) {
+  .to-do-list-item {
+    grid-template-columns: 75% 25%;
+  }
+
+  .to-do-table-container {
+    padding: 10px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .to-do-list-item {
+    padding: 10px 0;
+  }
+
+  .to-do-table-container {
+    padding: 5px;
+  }
 }

@@ -24,3 +24,13 @@
   align-self: center;
   user-select: none;
 }
+
+@media screen and (max-width: 660px) {
+  .sortbar-container {
+    grid-template-columns: 25% 45% 30%;
+  }
+
+  .sort-text {
+    font-size: 14px;
+  }
+}

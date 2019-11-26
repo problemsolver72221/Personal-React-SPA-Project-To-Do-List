@@ -3,7 +3,7 @@ import "./ToDoItem.css";
 
 const ToDoItem = ({ itemlabel, todoid, onItemCheck, completion }) => {
   return (
-    <div style={{ margin: "auto auto auto 0" }}>
+    <div className="todo-text-container">
       <svg className="tick-icon">
         <symbol id="check-tick" viewBox="0 0 12 10">
           <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
@@ -24,7 +24,12 @@ const ToDoItem = ({ itemlabel, todoid, onItemCheck, completion }) => {
           </svg>
         </span>
       </label>
-      <span className="to-do-item">{itemlabel}</span>
+      <span
+        className="to-do-item"
+        style={{ overflow: "hidden", textOverflow: "ellipsis" }}
+      >
+        {itemlabel}
+      </span>
     </div>
   );
 };

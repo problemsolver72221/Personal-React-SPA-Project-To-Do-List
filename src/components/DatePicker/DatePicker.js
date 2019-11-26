@@ -17,9 +17,8 @@ class DatePicker extends Component {
   componentDidMount() {
     flatpickr(this.datePicker.current, {
       onChange: this.onChange,
-      options: {
-        defaultDate: "today"
-      }
+      defaultDate: "today",
+      disableMobile: true
     });
   }
 

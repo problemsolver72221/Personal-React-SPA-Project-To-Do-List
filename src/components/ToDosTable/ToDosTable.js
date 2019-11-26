@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import ToDoItem from "../ToDoItem/ToDoItem";
 import DateViewer from "./../common/DateViewer/DateViewer";
-import dateSorter from "./../../utility/dateSorter";
 import "./ToDosTable.css";
 
 class ToDosTable extends Component {
   render() {
     const { data, currentDate, completion } = this.props;
+
     return (
       <div className="to-do-table-container">
         <ul className="to-do-list-container">
@@ -36,19 +36,9 @@ class ToDosTable extends Component {
                     <React.Fragment>
                       <div style={{ margin: 0 }}>
                         <DateViewer
-                          date={d.dateLabel}
-                          className={
-                            currentDate ===
-                              dateSorter([currentDate, d.dueDate], "asc")[0] &&
-                            !completion
-                              ? "selected-day"
-                              : dateSorter(
-                                  [currentDate, d.dueDate],
-                                  "asc"
-                                )[0] && !completion
-                              ? "selected-day expired"
-                              : "selected-day completed"
-                          }
+                          date={d.dueDate}
+                          current={currentDate}
+                          completion={completion}
                         />
                       </div>
                     </React.Fragment>

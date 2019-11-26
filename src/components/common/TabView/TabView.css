@@ -1,0 +1,74 @@
+.tab-list {
+  padding-left: 0;
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  cursor: pointer;
+}
+
+.tab-header {
+  font-size: 20px;
+}
+
+.tab-list-item {
+  display: grid;
+  background-color: white;
+  color: #223254;
+  display: inline-block;
+  list-style: none;
+  margin-bottom: -1px;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 3px solid #223254;
+}
+
+.tab-list-active {
+  background-color: white;
+  color: #2772ff;
+  display: block;
+  border-width: 1px 1px 0 1px;
+  border-bottom: 3px solid #2772ff;
+}
+
+.tab-counting-badge {
+  float: right;
+  font-family: Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  padding: 5px 8px;
+  margin: auto;
+  color: #fcfcfc;
+  background: #223254;
+  border-radius: 6px;
+  cursor: context-menu;
+}
+
+.tab-counting-badge.active {
+  background: #2772ff;
+}
+
+@media screen and (max-width: 660px) {
+  .tab-header {
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .tab-header {
+    font-size: 16px;
+  }
+
+  .tab-counting-badge {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .tab-header {
+    font-size: 14px;
+  }
+
+  .tab-counting-badge {
+    font-size: 10px;
+  }
+}

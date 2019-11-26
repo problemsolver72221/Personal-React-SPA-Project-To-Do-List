@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ToDoInput from "./../../components/ToDoInput/ToDoInput";
+import TabView from "./../../components/common/TabView/TabView";
 import ToDosTable from "./../../components/ToDosTable/ToDosTable";
 import DatePicker from "./../../components/DatePicker/DatePicker";
 import SortBar from "./../../components/common/SortBar/SortBar";
@@ -18,6 +19,8 @@ class ToDoPage extends Component {
     currentDate: "",
     toDoList: [],
     sortedList: [],
+    completedItems: 0,
+    nonCompletedItems: 0,
     currentSort: {
       name: {
         status: "default"
@@ -45,12 +48,34 @@ class ToDoPage extends Component {
 
   componentDidMount = () => {
     const date = dateGetter();
+    let starterData = {};
+
+    const userData = JSON.parse(localStorage.getItem("userToDoData"));
+
+    // if data is null set default values
+    userData === null
+      ? (starterData = {
+          toDoList: [],
+          completedItems: 0,
+          nonCompletedItems: 0
+        })
+      : // if not set the values from localStorage
+        (starterData = {
+          toDoList: userData[0].toDoList,
+          completedItems: userData[0].completedItems,
+          nonCompletedItems: userData[0].nonCompletedItems
+        });
+
     this.setState({
       currentDate: date,
       selectedDate: {
         date,
         expired: false
-      }
+      },
+      toDoList: starterData.toDoList,
+      sortedList: starterData.toDoList,
+      completedItems: starterData.completedItems,
+      nonCompletedItems: starterData.nonCompletedItems
     });
   };
 
@@ -60,16 +85,17 @@ class ToDoPage extends Component {
   };
 
   handleDatePick = val => {
+    // function for handling Date picker events
+
     const currentDate = dateGetter();
     const pickedDate = dateGetter(val);
 
     let dateLabel;
 
+    // Set the input label to "Today" if currentDate(dynamic value) is equal to today
     currentDate === pickedDate
       ? (dateLabel = "Today")
       : (dateLabel = dateFormatter(val));
-
-    // -----------------------------------
 
     let expired;
 
@@ -87,6 +113,7 @@ class ToDoPage extends Component {
   };
 
   handleValidation = () => {
+    // checks the input, to prevent having empty to-do items.
     const errors = {};
     const { toDoInput } = this.state;
 
@@ -98,8 +125,10 @@ class ToDoPage extends Component {
   };
 
   handleAddToDo = () => {
+    // Adding to-do handler via Add button
+
     // get the input from state
-    let { toDoInput, toDoList, dateLabel, selectedDate } = this.state;
+    const { toDoInput, toDoList, selectedDate } = this.state;
 
     const toDoId = randomIdGenerator();
 
@@ -112,19 +141,35 @@ class ToDoPage extends Component {
       toDoId,
       name: toDoInput,
       completed: false,
-      dateLabel,
       dueDate: selectedDate.date
     });
 
-    this.setState({ toDoList, sortedList: toDoList, toDoInput: "" });
+    const listLength = toDoList.filter(t => t.completed === false).length;
+
+    const userToDoData = [
+      {
+        toDoList,
+        sortedList: toDoList
+      }
+    ];
+
+    localStorage.setItem("userToDoData", JSON.stringify(userToDoData));
+
+    this.setState({
+      toDoList,
+      sortedList: toDoList,
+      toDoInput: "",
+      nonCompletedItems: listLength
+    });
   };
 
   handleKeyPress = event => {
+    // Adding to-do handler, with Enter key
     const key = event.key;
 
     if (key === "Enter") {
       // get the input from state
-      let { toDoInput, toDoList, dateLabel, selectedDate } = this.state;
+      let { toDoInput, toDoList, selectedDate } = this.state;
 
       const toDoId = randomIdGenerator();
 
@@ -137,22 +182,42 @@ class ToDoPage extends Component {
         toDoId,
         name: toDoInput,
         completed: false,
-        dateLabel,
         dueDate: selectedDate.date
       });
 
-      this.setState({ toDoList, sortedList: toDoList, toDoInput: "" });
+      const listLength = toDoList.filter(t => t.completed === false).length;
+
+      const userToDoData = [
+        {
+          toDoList,
+          sortedList: toDoList
+        }
+      ];
+
+      localStorage.setItem("userToDoData", JSON.stringify(userToDoData));
+
+      this.setState({
+        toDoList,
+        sortedList: toDoList,
+        toDoInput: "",
+        nonCompletedItems: listLength
+      });
     } else {
       return;
     }
   };
 
   handleItemCheck = event => {
+    //Item check handler for completed or nonCompleted state of to-dos
+
     // Get the id of the to-do item and store it.
     let toDoId = event;
 
-    // Get the current toDoList:
-    const toDoList = [...this.state.toDoList];
+    // Get the current toDoList from storage:
+
+    const userData = JSON.parse(localStorage.getItem("userToDoData"))[0]
+      .toDoList;
+    const toDoList = [...userData];
 
     // Find the index of the item:
     const index = toDoList.findIndex(toDo => toDo.toDoId === toDoId);
@@ -166,11 +231,34 @@ class ToDoPage extends Component {
     // Replace with modified version in the same index:
     toDoList[index] = { ...matched };
 
+    // calculate completed & non-complated items:
+
+    const completedItems = toDoList.filter(t => t.completed === true).length;
+    const nonCompletedItems = toDoList.filter(t => t.completed === false)
+      .length;
+
+    const userToDoData = [
+      {
+        toDoList,
+        sortedList: toDoList,
+        completedItems,
+        nonCompletedItems
+      }
+    ];
+
+    localStorage.setItem("userToDoData", JSON.stringify(userToDoData));
+
     // Set the new state
-    this.setState({ toDoList, sortedList: toDoList });
+    this.setState({
+      toDoList,
+      sortedList: toDoList,
+      completedItems,
+      nonCompletedItems
+    });
   };
 
   handleSorting = nameOfIt => {
+    // Sorting handler
     const { currentSort, toDoList } = this.state;
 
     let nextSort;
@@ -185,6 +273,20 @@ class ToDoPage extends Component {
     this.setState({ currentSort, sortedList });
   };
 
+  handleDeleteAll = () => {
+    // This deletes everything related to To-dos from localStorage
+    // As well as puts back the state into default mode.
+
+    this.setState({
+      toDoList: [],
+      sortedList: [],
+      completedItems: 0,
+      nonCompletedItems: 0
+    });
+
+    localStorage.removeItem("userToDoData");
+  };
+
   render() {
     const {
       toDoInput,
@@ -193,17 +295,21 @@ class ToDoPage extends Component {
       dateLabel,
       toDoList,
       sortedList,
+      completedItems,
+      nonCompletedItems,
       currentSort,
       sortTypes,
       errors
     } = this.state;
 
     return (
-      <div className="main-container">
-        <h1 style={{ marginBottom: "20px", textAlign: "center" }}>To Doing</h1>
+      <React.Fragment>
+        <h1 style={{ margin: "15px 0 0 0", textAlign: "center" }}>
+          To Do List
+        </h1>
         <div className="input-container">
           <div className="input-wrapper">
-            <span style={{ margin: "auto 10px -4px auto" }}>
+            <span className="date-pick-wrapper">
               <DatePicker onDatePick={this.handleDatePick} />
             </span>
             <ToDoInput
@@ -214,7 +320,7 @@ class ToDoPage extends Component {
               onKeyPress={this.handleKeyPress}
               onClick={() => this.setState({ errors: {} })}
             />
-            <span style={{ margin: "auto auto 0 15px" }}>
+            <span className="button-wrapper">
               <button className="add-button" onClick={this.handleAddToDo}>
                 Add
               </button>
@@ -238,32 +344,45 @@ class ToDoPage extends Component {
           )}
         </div>
         <div className="table-container">
-          <div>
-            <h2 className="to-do-header">To Do List</h2>
-            {toDoList.length > 0 ? (
-              <SortBar
-                onSorting={this.handleSorting}
-                currentSort={currentSort}
-                sortTypes={sortTypes}
+          <TabView>
+            <div label="To Do List" count={nonCompletedItems}>
+              {toDoList.length > 0 ? (
+                <SortBar
+                  onSorting={this.handleSorting}
+                  currentSort={currentSort}
+                  sortTypes={sortTypes}
+                />
+              ) : null}
+              <ToDosTable
+                data={sortedList}
+                currentDate={currentDate}
+                itemCheck={this.handleItemCheck}
+                completion={false}
               />
-            ) : null}
-            <ToDosTable
-              data={sortedList}
-              currentDate={currentDate}
-              itemCheck={this.handleItemCheck}
-              completion={false}
-            />
-          </div>
+            </div>
+            <div label="Completed" count={completedItems}>
+              {toDoList.length > 0 ? (
+                <SortBar
+                  onSorting={this.handleSorting}
+                  currentSort={currentSort}
+                  sortTypes={sortTypes}
+                />
+              ) : null}
+              <ToDosTable
+                data={sortedList}
+                currentDate={currentDate}
+                itemCheck={this.handleItemCheck}
+                completion={true}
+              />
+            </div>
+          </TabView>
           <div>
-            <h2 className="to-do-header">Completed</h2>
-            <ToDosTable
-              data={toDoList}
-              itemCheck={this.handleItemCheck}
-              completion={true}
-            />
+            <button className="add-button clear" onClick={this.handleDeleteAll}>
+              Delete All
+            </button>
           </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }

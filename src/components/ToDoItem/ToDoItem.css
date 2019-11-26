@@ -1,7 +1,7 @@
 .inside-label {
   cursor: pointer;
   user-select: none;
-  border-radius: 8px;
+  border-radius: 4px;
   overflow: hidden;
   transition: all 0.2s ease;
 }
@@ -80,10 +80,18 @@
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   padding: 10px;
   border-bottom: 0.5px solid #c8ccd4;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .todo-item:hover {
   background: #d4e2ff;
+}
+
+.todo-text-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  margin: auto auto auto 0px;
 }
 
 .item-text {
@@ -91,14 +99,6 @@
   padding: 0;
   text-align: left;
   position: relative;
-}
-
-@media screen and (max-width: 650px) {
-  .inside-label {
-    width: 100%;
-    margin-bottom: 4px;
-    display: inline-block;
-  }
 }
 
 @keyframes myAnimation {
